@@ -3,10 +3,6 @@
 A curated collection of CTF challenges, organized by category. Flags follow
 the `Securinets{...}` / `SecurinetsEnit{...}` format.
 
-> ⚠️ The web challenges are **intentionally vulnerable by design**. Run each
-> one only inside a throwaway container on an isolated network — never expose
-> it to the public internet or a host you care about.
-
 ## 📂 Categories
 
 - [`web/`](web/) — web application security challenges
