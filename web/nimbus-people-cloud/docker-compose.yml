@@ -1,0 +1,53 @@
+# NIMBUS People Cloud — CTF target
+#
+# INTENTIONALLY VULNERABLE. Run only on an isolated CTF host.
+# The Postgres port is deliberately NOT published to the host.
+#
+#   docker compose up --build     # play at http://localhost:8080
+#   docker compose down -v        # wipe the volume -> re-seed + fresh flag
+
+services:
+  db:
+    image: postgres:16
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: nimbus_admin
+      POSTGRES_PASSWORD: nimbus_admin_bootstrap_pw
+      POSTGRES_DB: nimbus
+    volumes:
+      - db-data:/var/lib/postgresql/data
+      # init.sql runs once, on an empty data volume.
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    # NOTE: no `ports:` mapping — the database is not exposed to the host.
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U nimbus_admin -d nimbus"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    networks: [nimbus]
+
+  app:
+    build: ./server
+    restart: unless-stopped
+    environment:
+      # The app connects as the LEAST-PRIVILEGE role created in init.sql,
+      # never as the Postgres superuser.
+      DATABASE_URL: postgres://nimbus_app:app_only_readmostly_pw@db:5432/nimbus
+      JWT_SECRET: change-me-per-deployment
+      PORT: "4000"
+      # Difficulty: "0" (default) = introspection open; "1" = enable the
+      # bypassable __schema gateway filter. Override: ENABLE_WAF=1 docker compose up
+      ENABLE_WAF: "${ENABLE_WAF:-1}"
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8080:4000"
+    networks: [nimbus]
+
+volumes:
+  db-data:
+
+networks:
+  nimbus:
+    driver: bridge

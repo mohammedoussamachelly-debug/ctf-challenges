@@ -1,40 +1,49 @@
-# Forensics Challenges
+# CTF Challenges
 
-Welcome to the **Forensics Challenges** repository! 🔍
+A curated collection of CTF challenges, organized by category. Flags follow
+the `Securinets{...}` / `SecurinetsEnit{...}` format.
 
-This repository contains a curated collection of digital forensics challenges designed to test and enhance your skills in analyzing digital artifacts, extracting hidden information, and solving real-world forensic scenarios.
+> ⚠️ The web challenges are **intentionally vulnerable by design**. Run each
+> one only inside a throwaway container on an isolated network — never expose
+> it to the public internet or a host you care about.
 
-## 📚 What's Inside
+## 📂 Categories
 
-You'll find challenges covering various forensics domains:
+- [`web/`](web/) — web application security challenges
+- [`forensics/`](forensics/) — digital forensics challenges
 
-- **Audio Forensics** — Extract hidden data from audio files
-- **Network Forensics** — Analyze network traffic and logs
-- **Memory Forensics** — Investigate memory dumps
-- **Disk Forensics** — Recover deleted files and analyze file systems
-- **Steganography** — Uncover hidden messages in images and media
-- **Log Analysis** — Parse and investigate system logs
-- **Timestamp Analysis** — Investigate file modification times and events
+---
 
-## 🎯 How to Use
+## 🌐 Web
 
-1. **Browse** the challenges in the repository
-2. **Download** the challenge files
-3. **Analyze** using your forensics toolkit (Wireshark, Volatility, Autopsy, etc.)
-4. **Extract** the hidden information or flag
-5. **Submit** your findings
+| Challenge | Bug class | Difficulty | Stack |
+|---|---|---|---|
+| [nimbus-people-cloud](web/nimbus-people-cloud/) | Broken Object-Level Authorization (BOLA/IDOR) via GraphQL introspection | Easy–Medium | Node + Apollo + Postgres |
+| [vantage-ctf](web/vantage-ctf/) | UNION-based SQL injection (with a bypassable WAF) | Medium | Flask + PostgreSQL |
+| [fileupload-challenge](web/fileupload-challenge/) (PaperTrail) | Unrestricted file upload → RCE via `.htaccess` | Medium | PHP + Apache |
+| [scrapline-ctf-challenge](web/scrapline-ctf-challenge/) | CSRF + on-site redirect gadget bypassing `SameSite=Strict` | Medium–Hard | Flask + headless admin bot |
 
-## 🏆 Challenge Format
+Each web challenge ships with a `docker compose up --build` setup, a
+player-facing `README.md`, and a `SOLUTION.md` (intended solve + flag).
 
-Each challenge includes:
-- A **README** with description and difficulty level
-- **Challenge files** containing the forensic artifacts
-- **Flag format** specification (e.g., `SecurinetsEnit{...}`)
+## 🔍 Forensics
+
+| Challenge | Category | Flag format |
+|---|---|---|
+| [challenge1_FIJIBI](forensics/challenge1_FIJIBI/) | Audio forensics — hidden data in voice notes | `SecurinetsEnit{...}` |
+
+---
+
+## 🎯 How to use
+
+1. **Browse** to a challenge directory and read its `README.md`.
+2. **Run / download** the challenge (web challenges: `docker compose up --build`).
+3. **Solve** it with your own tooling (Burp, curl, Wireshark, Audacity, …).
+4. **Check `SOLUTION.md`** (web challenges) only if you're stuck or operating
+   the challenge — it contains the flag.
 
 Difficulty levels: **Easy** | **Medium** | **Hard**
 
 ---
 
-**Good luck, forensic investigator!** 🔐
-
-For questions or feedback, feel free to open an issue or reach out.
+**Good luck!** 🔐  For questions or feedback, open an issue.

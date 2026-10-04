@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Your notes</h2>
+<p><a href="{{ url_for('new_note') }}">+ New note</a></p>
+
+{% for note in owned %}
+  <div class="note-card">
+    <h3><span class="note-id">#{{ note['id'] }}</span> {{ note['title'] }}</h3>
+    <p>{{ note['content'] }}</p>
+    <form class="inline" method="post" action="{{ url_for('share_note') }}">
+      <input type="hidden" name="note_id" value="{{ note['id'] }}">
+      <input name="username" placeholder="share with username" aria-label="share with username">
+      <button type="submit">Share</button>
+    </form>
+  </div>
+{% else %}
+  <p class="empty-state">You haven't written any notes yet.</p>
+{% endfor %}
+
+<div class="section-heading">Shared with you</div>
+{% for note in shared %}
+  <div class="note-card">
+    <h3><span class="note-id">#{{ note['id'] }}</span> {{ note['title'] }}</h3>
+    <p>{{ note['content'] }}</p>
+  </div>
+{% else %}
+  <p class="empty-state">Nothing shared with you yet.</p>
+{% endfor %}
+{% endblock %}

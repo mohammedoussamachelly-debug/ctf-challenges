@@ -1,0 +1,10 @@
+services:
+  papertrail:
+    build: .
+    container_name: papertrail
+    ports:
+      - "8080:80"
+    restart: unless-stopped
+    # Uploads and metadata live only inside the container. Recreating the
+    # container (docker compose down && up) resets the challenge to a clean
+    # state.

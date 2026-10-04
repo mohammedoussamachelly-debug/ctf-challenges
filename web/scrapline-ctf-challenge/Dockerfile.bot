@@ -1,0 +1,13 @@
+FROM mcr.microsoft.com/playwright/python:v1.47.0-jammy
+WORKDIR /bot
+
+COPY requirements-bot.txt .
+RUN pip install --no-cache-dir -r requirements-bot.txt
+
+COPY bot/admin_bot.py .
+
+ENV APP_URL="http://app:5000"
+ENV SCRAPLINE_DB=/app/data/scrapline.db
+ENV ADMIN_PASSWORD="change_me_too"
+
+CMD ["python", "admin_bot.py"]

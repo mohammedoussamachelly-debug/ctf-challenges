@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+{% block title %}Catalog · VANTAGE Procurement Cloud{% endblock %}
+
+{% block content %}
+<section class="catalog-head">
+  <div class="catalog-head-inner">
+    <div>
+      <span class="eyebrow">Catalog</span>
+      <h1>Product catalog</h1>
+      <p class="lead-sm">Browse approved SKUs across the vendor network. Filter by category or search by name.</p>
+    </div>
+  </div>
+</section>
+
+<section class="catalog-body">
+  <div class="catalog-grid">
+    <!-- Filters -->
+    <aside class="filters">
+      <form method="get" action="{{ url_for('catalog') }}" class="filter-form">
+        <div class="field">
+          <label for="q">Search</label>
+          <input type="text" id="q" name="q" value="{{ q|e }}" placeholder="e.g. rack server" autocomplete="off">
+        </div>
+        <div class="field">
+          <label for="category">Category</label>
+          <select id="category" name="category">
+            <option value="" {% if not selected_category %}selected{% endif %}>All categories</option>
+            {% for c in categories %}
+              <option value="{{ c }}" {% if selected_category == c %}selected{% endif %}>{{ c }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Apply filters</button>
+        <a class="reset-link" href="{{ url_for('catalog') }}">Reset</a>
+      </form>
+
+      <div class="filter-note">
+        <h4>Need something unlisted?</h4>
+        <p class="muted">End-of-life and restricted SKUs are hidden from the public catalog. Contact your procurement lead for internal items.</p>
+      </div>
+    </aside>
+
+    <!-- Results -->
+    <div class="results">
+      {% if blocked %}
+        <div class="banner banner-block">
+          <strong>Request blocked by security policy.</strong>
+          <span>Your query matched a rule in the web application firewall and was not processed. (WAF_DENY)</span>
+        </div>
+      {% elif error %}
+        <div class="banner banner-error">
+          <strong>Catalog service error.</strong>
+          <span>{{ error }}</span>
+        </div>
+      {% else %}
+        <div class="results-meta">
+          <span>
+            {{ rows|length }} result{{ '' if rows|length == 1 else 's' }}
+            {% if selected_category %} in <b>{{ selected_category|e }}</b>{% endif %}
+            {% if q %} matching “{{ q|e }}”{% endif %}
+          </span>
+        </div>
+
+        {% if rows and rows|length > 0 %}
+        <div class="table-wrap">
+          <table class="catalog-table">
+            <thead>
+              <tr>
+                <th>Code</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Category</th>
+                <th>Vendor</th>
+                <th class="num">Price (USD)</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for r in rows %}
+              <tr>
+                <td class="mono">{{ r.product_code }}</td>
+                <td class="strong">{{ r.name }}</td>
+                <td class="desc">{{ r.description }}</td>
+                <td>{% if r.category %}<span class="tag">{{ r.category }}</span>{% endif %}</td>
+                <td>{{ r.vendor }}</td>
+                <td class="num">
+                  {% if r.price_usd is not none %}${{ "{:,.2f}".format(r.price_usd) }}{% else %}—{% endif %}
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        {% else %}
+        <div class="empty">
+          <div class="empty-ico">∅</div>
+          <p>No products match the current filters.</p>
+        </div>
+        {% endif %}
+      {% endif %}
+    </div>
+  </div>
+</section>
+{% endblock %}

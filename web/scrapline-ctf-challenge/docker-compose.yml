@@ -1,0 +1,30 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    environment:
+      - FLAG=SECURINETS{redirect_gadget_beats_samesite_strict}
+      - SECRET_KEY=bf888eaaf3aaa4569253eccd7eb808c019fbee122ce50096afe8fc34f7b52e3f
+      - ADMIN_PASSWORD=Adm1n_Only_2038!
+      - SCRAPLINE_DB=/app/data/scrapline.db
+    volumes:
+      - scrapline-data:/app/data
+
+  bot:
+    build:
+      context: .
+      dockerfile: Dockerfile.bot
+    environment:
+      - APP_URL=http://app:5000
+      - ADMIN_PASSWORD=Adm1n_Only_2038!
+      - SCRAPLINE_DB=/app/data/scrapline.db
+    volumes:
+      - scrapline-data:/app/data
+    depends_on:
+      - app
+
+volumes:
+  scrapline-data:

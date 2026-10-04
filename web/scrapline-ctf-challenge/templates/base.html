@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Scrapline{% endblock %}</title>
+  <style>
+    :root {
+      --bg: #f4f5f8;
+      --surface: #ffffff;
+      --border: #e3e5ea;
+      --text: #1a1d23;
+      --muted: #6b7280;
+      --brand: #2f6feb;
+      --brand-dark: #244fb0;
+      --danger: #d1233d;
+      --danger-bg: #fdeaee;
+      --header-bg: #1c2b3a;
+      --radius: 10px;
+    }
+    * { box-sizing: border-box; }
+    body {
+      font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      margin: 0;
+      color: var(--text);
+      line-height: 1.5;
+    }
+    header {
+      background: linear-gradient(135deg, var(--header-bg), #24384c);
+      color: #fff;
+      padding: 14px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      box-shadow: 0 1px 6px rgba(0,0,0,.15);
+    }
+    header .brand {
+      font-weight: 700;
+      font-size: 18px;
+      letter-spacing: .2px;
+    }
+    header nav {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      flex-wrap: wrap;
+    }
+    header nav a {
+      color: rgba(255,255,255,.85);
+      text-decoration: none;
+      font-size: 13.5px;
+      padding: 6px 10px;
+      border-radius: 6px;
+      transition: background .15s ease, color .15s ease;
+    }
+    header nav a:hover {
+      background: rgba(255,255,255,.12);
+      color: #fff;
+    }
+    main {
+      max-width: 640px;
+      margin: 40px auto;
+      background: var(--surface);
+      padding: 28px 32px;
+      border-radius: var(--radius);
+      box-shadow: 0 1px 4px rgba(0,0,0,.06), 0 8px 24px rgba(20,25,35,.04);
+    }
+    main h2 {
+      margin-top: 0;
+      font-size: 20px;
+    }
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 9px 11px;
+      margin: 0 0 16px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 14px;
+      font-family: inherit;
+      background: #fff;
+      color: var(--text);
+      transition: border-color .15s ease, box-shadow .15s ease;
+    }
+    input:focus, textarea:focus {
+      outline: none;
+      border-color: var(--brand);
+      box-shadow: 0 0 0 3px rgba(47,111,235,.15);
+    }
+    button {
+      background: var(--brand);
+      color: #fff;
+      border: 0;
+      padding: 10px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+      transition: background .15s ease, transform .05s ease;
+    }
+    button:hover { background: var(--brand-dark); }
+    button:active { transform: translateY(1px); }
+    .error {
+      color: var(--danger);
+      background: var(--danger-bg);
+      border: 1px solid rgba(209,35,61,.25);
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 13px;
+      margin-bottom: 16px;
+    }
+    .note-card {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px 18px;
+      margin-bottom: 12px;
+      background: #fbfbfd;
+      transition: box-shadow .15s ease;
+    }
+    .note-card:hover { box-shadow: 0 2px 10px rgba(20,25,35,.06); }
+    .note-card h3 { margin: 0 0 6px; font-size: 15px; }
+    .note-id {
+      display: inline-block;
+      color: var(--muted);
+      font-weight: 500;
+      font-size: 12px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      margin-right: 4px;
+    }
+    .note-card p { margin: 0; font-size: 13.5px; color: #444; white-space: pre-wrap; }
+    .muted { color: var(--muted); font-size: 13px; }
+    .empty-state {
+      color: var(--muted);
+      font-size: 13.5px;
+      border: 1px dashed var(--border);
+      border-radius: var(--radius);
+      padding: 18px;
+      text-align: center;
+      background: #fafbfc;
+    }
+    form.inline {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+    form.inline input {
+      width: auto;
+      flex: 1 1 160px;
+      margin: 0;
+      padding: 6px 9px;
+    }
+    form.inline button { padding: 6px 14px; }
+    a { color: var(--brand); }
+    .section-heading {
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+      color: var(--muted);
+      margin: 28px 0 10px;
+    }
+    .section-heading:first-child { margin-top: 0; }
+  </style>
+</head>
+<body>
+  <header>
+    <span class="brand">📝 Scrapline</span>
+    <nav>
+      {% if user %}
+        <a href="{{ url_for('notes') }}">My notes</a>
+        <a href="{{ url_for('logout') }}">Log out ({{ user['username'] }})</a>
+      {% else %}
+        <a href="{{ url_for('login') }}">Log in</a>
+        <a href="{{ url_for('register') }}">Register</a>
+      {% endif %}
+      <a href="{{ url_for('feedback') }}">Feedback</a>
+      <a href="{{ url_for('report') }}">Report a link</a>
+    </nav>
+  </header>
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>

@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Not found · VANTAGE{% endblock %}
+{% block content %}
+<section class="sso-wrap">
+  <div class="sso-card center">
+    <div class="err-code">404</div>
+    <h1>Page not found</h1>
+    <p class="muted">The resource you requested does not exist or has moved.</p>
+    <a class="btn btn-primary" href="{{ url_for('home') }}">Return home</a>
+  </div>
+</section>
+{% endblock %}

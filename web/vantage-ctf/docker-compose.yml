@@ -1,0 +1,50 @@
+# =============================================================================
+#  VANTAGE Procurement Cloud — CTF challenge stack
+#  UNION-based SQL injection over PostgreSQL.
+#
+#  Start:   docker compose up --build
+#  Play:    http://localhost:8080
+#  Reset:   docker compose down -v   (the -v wipes the DB so the flag re-seeds)
+# =============================================================================
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: vantage_db
+    environment:
+      POSTGRES_DB: vantage
+      POSTGRES_USER: vantage_admin
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-s3rv3r_s1de_admin_pw}
+    volumes:
+      - ./db/init.sql:/docker-entrypoint-initdb.d/00-init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U vantage_admin -d vantage"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+    # No published port: the database is reachable only from the app network,
+    # exactly as it should be. Players reach it only through the injection.
+    networks:
+      - vantage_net
+    restart: unless-stopped
+
+  app:
+    build: ./app
+    container_name: vantage_app
+    environment:
+      DB_HOST: db
+      DB_PORT: "5432"
+      DB_NAME: vantage
+      DB_USER: vantage_app
+      DB_PASSWORD: app_only_readonly_pw
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8080:5000"
+    networks:
+      - vantage_net
+    restart: unless-stopped
+
+networks:
+  vantage_net:
+    driver: bridge

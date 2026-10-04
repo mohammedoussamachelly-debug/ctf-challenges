@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}VANTAGE Procurement Cloud{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="{{ url_for('home') }}">
+        <span class="brand-mark" aria-hidden="true">
+          <svg width="26" height="26" viewBox="0 0 32 32" fill="none">
+            <path d="M4 5 L16 27 L28 5" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="16" cy="9" r="2.4" fill="currentColor"/>
+          </svg>
+        </span>
+        <span class="brand-text">VANTAGE<span class="brand-sub">Procurement Cloud</span></span>
+      </a>
+      <nav class="mainnav">
+        <a href="{{ url_for('home') }}">Overview</a>
+        <a href="{{ url_for('catalog') }}">Catalog</a>
+        <a href="{{ url_for('home') }}#vendors">Vendors</a>
+        <a href="{{ url_for('home') }}#compliance">Compliance</a>
+      </nav>
+      <div class="topbar-actions">
+        <span class="env-pill" title="Deployment environment">PROD</span>
+        <a class="btn btn-ghost" href="{{ url_for('sso') }}">Sign in</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="page">
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-col">
+        <div class="brand brand-sm">
+          <span class="brand-mark" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 32 32" fill="none">
+              <path d="M4 5 L16 27 L28 5" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          <span class="brand-text">VANTAGE</span>
+        </div>
+        <p class="muted">Enterprise procurement &amp; vendor lifecycle management.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Platform</h4>
+        <a href="{{ url_for('catalog') }}">Catalog</a>
+        <a href="{{ url_for('home') }}#vendors">Vendor directory</a>
+        <a href="{{ url_for('home') }}#compliance">Compliance center</a>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <a href="#">About</a>
+        <a href="#">Security</a>
+        <a href="#">Status</a>
+      </div>
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <a href="#">Terms</a>
+        <a href="#">Privacy</a>
+        <a href="#">DPA</a>
+      </div>
+    </div>
+    <div class="footer-base">
+      <span>© 2026 Vantage Systems, Inc. All rights reserved.</span>
+      <span class="muted">SOC 2 Type II · ISO 27001 · build {{ "2026.10.1" }}</span>
+    </div>
+  </footer>
+</body>
+</html>

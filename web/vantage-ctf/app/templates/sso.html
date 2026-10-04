@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Sign in · VANTAGE Procurement Cloud{% endblock %}
+{% block content %}
+<section class="sso-wrap">
+  <div class="sso-card">
+    <div class="brand brand-sm center">
+      <span class="brand-mark" aria-hidden="true">
+        <svg width="22" height="22" viewBox="0 0 32 32" fill="none">
+          <path d="M4 5 L16 27 L28 5" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
+      <span class="brand-text">VANTAGE</span>
+    </div>
+    <h1>Sign in</h1>
+    <p class="muted">Single sign-on is required for employee access.</p>
+    <button class="btn btn-primary btn-block" disabled>Continue with Corporate SSO</button>
+    <p class="sso-foot muted">Having trouble? Contact the service desk. Guest catalog browsing does not require an account.</p>
+    <a class="reset-link center" href="{{ url_for('catalog') }}">← Back to catalog</a>
+  </div>
+</section>
+{% endblock %}

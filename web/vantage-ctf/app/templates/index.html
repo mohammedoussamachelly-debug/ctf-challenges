@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% block title %}VANTAGE Procurement Cloud — Enterprise sourcing, unified{% endblock %}
+
+{% block content %}
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-copy">
+      <span class="eyebrow">Procurement · Vendor Lifecycle · Spend Control</span>
+      <h1>Enterprise sourcing,<br>unified on one control plane.</h1>
+      <p class="lead">
+        Vantage centralizes catalog, vendor onboarding, and approval workflows for
+        infrastructure teams that buy at scale — from edge nodes to all-flash arrays.
+      </p>
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="{{ url_for('catalog') }}">Browse catalog</a>
+        <a class="btn btn-ghost" href="{{ url_for('home') }}#compliance">View compliance</a>
+      </div>
+      <dl class="hero-stats">
+        <div><dt>$2.4B</dt><dd>annual spend managed</dd></div>
+        <div><dt>1,900+</dt><dd>vetted SKUs</dd></div>
+        <div><dt>37</dt><dd>vendor integrations</dd></div>
+      </dl>
+    </div>
+    <div class="hero-panel" aria-hidden="true">
+      <div class="panel-head">
+        <span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>
+        <span class="panel-title">requisition · RQ-20481</span>
+      </div>
+      <div class="panel-body">
+        <div class="kv"><span>Requestor</span><b>Platform Engineering</b></div>
+        <div class="kv"><span>Line items</span><b>4</b></div>
+        <div class="kv"><span>Status</span><b class="ok">Awaiting finance approval</b></div>
+        <div class="bar"><i style="width:68%"></i></div>
+        <div class="panel-rows">
+          <div><span>Vantage R710 Rack Server</span><b>$8,420.00</b></div>
+          <div><span>Aperture 32-Port L3 Switch</span><b>$5,740.00</b></div>
+          <div><span>GridLine 3kVA Smart UPS</span><b>$1,890.00</b></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band">
+  <div class="band-inner feature-grid">
+    <article class="feature">
+      <div class="feature-ico">◇</div>
+      <h3>Unified catalog</h3>
+      <p>One normalized SKU catalog across every vendor, with live pricing and lifecycle flags.</p>
+    </article>
+    <article class="feature">
+      <div class="feature-ico">⬡</div>
+      <h3>Policy-driven approvals</h3>
+      <p>Route requisitions through finance and security gates with full audit trails.</p>
+    </article>
+    <article class="feature">
+      <div class="feature-ico">⬢</div>
+      <h3>Spend intelligence</h3>
+      <p>Category-level analytics surface savings and consolidation opportunities.</p>
+    </article>
+  </div>
+</section>
+
+<section id="vendors" class="band band-alt">
+  <div class="band-inner">
+    <h2 class="section-title">Trusted vendor network</h2>
+    <p class="section-sub">Pre-negotiated terms with the vendors enterprise infrastructure runs on.</p>
+    <div class="vendor-row">
+      <span class="vendor-chip">Vantage Systems</span>
+      <span class="vendor-chip">Aperture Networks</span>
+      <span class="vendor-chip">Monolith Data</span>
+      <span class="vendor-chip">Sentinel Labs</span>
+      <span class="vendor-chip">GridLine Power</span>
+    </div>
+  </div>
+</section>
+
+<section id="compliance" class="band">
+  <div class="band-inner compliance">
+    <div>
+      <h2 class="section-title">Built for regulated environments</h2>
+      <p class="section-sub">
+        Vantage runs under continuous controls monitoring. Access is scoped per role,
+        and every catalog read is logged to the immutable audit store.
+      </p>
+      <ul class="check-list">
+        <li>SOC 2 Type II &amp; ISO 27001 aligned</li>
+        <li>Role-based access, least-privilege service accounts</li>
+        <li>Encrypted at rest and in transit</li>
+      </ul>
+    </div>
+    <div class="badge-stack">
+      <div class="badge">SOC 2</div>
+      <div class="badge">ISO 27001</div>
+      <div class="badge">GDPR</div>
+      <div class="badge">HIPAA</div>
+    </div>
+  </div>
+</section>
+{% endblock %}

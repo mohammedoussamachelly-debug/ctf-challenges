@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Report a suspicious link</h2>
+<p class="muted">Our team reviews reported links and opens them to investigate.</p>
+{% if submitted %}
+  <p>✅ Thanks — your report has been queued for review.</p>
+{% else %}
+  <form method="post">
+    <label for="url">URL</label>
+    <input id="url" name="url" required placeholder="https://...">
+    <button type="submit">Report</button>
+  </form>
+{% endif %}
+{% endblock %}

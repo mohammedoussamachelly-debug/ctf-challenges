@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Feedback #{{ feedback['id'] }}</h2>
+<p>{{ feedback['message'] }}</p>
+<p class="muted">Submitted {{ feedback['created_at'] }}</p>
+{% endblock %}
