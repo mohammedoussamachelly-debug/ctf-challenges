@@ -12,6 +12,7 @@ read the `reports` table.
 import os
 import sqlite3
 import time
+from urllib.parse import urlsplit, urlunsplit
 
 from playwright.sync_api import sync_playwright
 
@@ -20,6 +21,19 @@ ADMIN_USERNAME = os.environ.get("ADMIN_USERNAME", "admin")
 ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "Adm1n_Only_2038!")
 DB_PATH = os.environ.get("SCRAPLINE_DB", "scrapline.db")
 POLL_SECONDS = int(os.environ.get("POLL_SECONDS", "5"))
+
+
+def to_local(reported):
+    """The admin only ever browses its own site. Take just the path+query
+    (+fragment) from whatever was reported and visit it on APP_URL. This keeps
+    every visit same-origin with the admin's login — so the SameSite=Strict
+    session cookie always applies — regardless of which host (public IP,
+    hostname, ...) the reporter typed. The exploit chain is unchanged; this
+    only removes the deployment artifact where a reported public URL would be a
+    different origin than the admin's internal login."""
+    parts = urlsplit(reported)
+    path_q = urlunsplit(("", "", parts.path or "/", parts.query, parts.fragment))
+    return APP_URL.rstrip("/") + path_q
 
 
 def _db():
@@ -61,14 +75,15 @@ def main():
 
         while True:
             for report_id, url in fetch_pending():
-                print(f"[admin_bot] visiting report #{report_id}: {url}")
+                target = to_local(url)
+                print(f"[admin_bot] report #{report_id}: {url} -> visiting {target}")
                 try:
                     visit_page = context.new_page()
-                    visit_page.goto(url, timeout=10000)
+                    visit_page.goto(target, timeout=10000)
                     visit_page.wait_for_timeout(4000)  # let any client-side redirect fire
                     visit_page.close()
                 except Exception as exc:  # noqa: BLE001 - keep the bot alive
-                    print(f"[admin_bot] error visiting {url}: {exc}")
+                    print(f"[admin_bot] error visiting {target}: {exc}")
                 mark_visited(report_id)
             time.sleep(POLL_SECONDS)
 
